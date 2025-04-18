@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.nekox41.mapper.LongyunImageMapper">
+    
+    <resultMap type="LongyunImage" id="LongyunImageResult">
+        <result property="imageId"    column="image_id"    />
+        <result property="articleId"    column="article_id"    />
+        <result property="imageName"    column="image_name"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectLongyunImageVo">
+        select image_id, article_id, image_name, image_url, create_by, create_time, update_by, update_time, remark from longyun_image
+    </sql>
+
+    <select id="selectLongyunImageList" parameterType="LongyunImage" resultMap="LongyunImageResult">
+        <include refid="selectLongyunImageVo"/>
+        <where>  
+            <if test="imageId != null "> and image_id = #{imageId}</if>
+            <if test="articleId != null "> and article_id = #{articleId}</if>
+            <if test="imageName != null  and imageName != ''"> and image_name like concat('%', #{imageName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectLongyunImageByImageId" parameterType="Long" resultMap="LongyunImageResult">
+        <include refid="selectLongyunImageVo"/>
+        where image_id = #{imageId}
+    </select>
+
+    <insert id="insertLongyunImage" parameterType="LongyunImage" useGeneratedKeys="true" keyProperty="imageId">
+        insert into longyun_image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">article_id,</if>
+            <if test="imageName != null">image_name,</if>
+            <if test="imageUrl != null">image_url,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">#{articleId},</if>
+            <if test="imageName != null">#{imageName},</if>
+            <if test="imageUrl != null">#{imageUrl},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLongyunImage" parameterType="LongyunImage">
+        update longyun_image
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="articleId != null">article_id = #{articleId},</if>
+            <if test="imageName != null">image_name = #{imageName},</if>
+            <if test="imageUrl != null">image_url = #{imageUrl},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where image_id = #{imageId}
+    </update>
+
+    <delete id="deleteLongyunImageByImageId" parameterType="Long">
+        delete from longyun_image where image_id = #{imageId}
+    </delete>
+
+    <delete id="deleteLongyunImageByImageIds" parameterType="String">
+        delete from longyun_image where image_id in 
+        <foreach item="imageId" collection="array" open="(" separator="," close=")">
+            #{imageId}
+        </foreach>
+    </delete>
+</mapper>

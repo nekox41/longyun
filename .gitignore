@@ -1,0 +1,11 @@
+/.idea/
+# Server
+/longyun/.idea/
+/longyun/bin/
+/longyun/doc/
+# UI
+/longyun-ui/bin/
+/longyun-ui/dist/
+/longyun-ui/node_modules
+# Mobile
+
