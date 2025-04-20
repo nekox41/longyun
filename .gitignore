@@ -3,9 +3,18 @@
 /longyun/.idea/
 /longyun/bin/
 /longyun/doc/
+/longyun/longyun-admin/target/
+/longyun/longyun-common/target/
+/longyun/longyun-framework/target/
+/longyun/longyun-generator/target/
+/longyun/longyun-quartz/target/
+/longyun/longyun-server/target/
+/longyun/longyun-system/target/
 # UI
 /longyun-ui/bin/
 /longyun-ui/dist/
 /longyun-ui/node_modules
 # Mobile
 
+longyun/example/
+longyun/longyun.iml

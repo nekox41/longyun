@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.nekox41.server.mapper.LongyunCompanyMapper">
+    
+    <resultMap type="LongyunCompany" id="LongyunCompanyResult">
+        <result property="id"    column="id"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="companyContact"    column="company_contact"    />
+        <result property="companyDescription"    column="company_description"    />
+    </resultMap>
+
+    <sql id="selectLongyunCompanyVo">
+        select id, company_name, company_contact, company_description from longyun_company
+    </sql>
+
+    <select id="selectLongyunCompanyList" parameterType="LongyunCompany" resultMap="LongyunCompanyResult">
+        <include refid="selectLongyunCompanyVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectLongyunCompanyById" parameterType="Long" resultMap="LongyunCompanyResult">
+        <include refid="selectLongyunCompanyVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLongyunCompany" parameterType="LongyunCompany" useGeneratedKeys="true" keyProperty="id">
+        insert into longyun_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyName != null">company_name,</if>
+            <if test="companyContact != null">company_contact,</if>
+            <if test="companyDescription != null">company_description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyName != null">#{companyName},</if>
+            <if test="companyContact != null">#{companyContact},</if>
+            <if test="companyDescription != null">#{companyDescription},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLongyunCompany" parameterType="LongyunCompany">
+        update longyun_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyName != null">company_name = #{companyName},</if>
+            <if test="companyContact != null">company_contact = #{companyContact},</if>
+            <if test="companyDescription != null">company_description = #{companyDescription},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLongyunCompanyById" parameterType="Long">
+        delete from longyun_company where id = #{id}
+    </delete>
+
+    <delete id="deleteLongyunCompanyByIds" parameterType="String">
+        delete from longyun_company where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
