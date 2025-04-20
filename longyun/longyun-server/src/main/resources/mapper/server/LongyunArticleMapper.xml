@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.nekox41.server.mapper.LongyunArticleMapper">
+    
+    <resultMap type="LongyunArticle" id="LongyunArticleResult">
+        <result property="articleId"    column="article_id"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="articleType"    column="article_type"    />
+        <result property="status"    column="status"    />
+        <result property="image"    column="image"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectLongyunArticleVo">
+        select article_id, title, content, article_type, status, image, create_by, create_time, update_by, update_time, remark from longyun_article
+    </sql>
+
+    <select id="selectLongyunArticleList" parameterType="LongyunArticle" resultMap="LongyunArticleResult">
+        <include refid="selectLongyunArticleVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="articleType != null "> and article_type = #{articleType}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectLongyunArticleByArticleId" parameterType="Long" resultMap="LongyunArticleResult">
+        <include refid="selectLongyunArticleVo"/>
+        where article_id = #{articleId}
+    </select>
+
+    <insert id="insertLongyunArticle" parameterType="LongyunArticle" useGeneratedKeys="true" keyProperty="articleId">
+        insert into longyun_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="articleType != null">article_type,</if>
+            <if test="status != null">status,</if>
+            <if test="image != null and image != ''">image,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="articleType != null">#{articleType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="image != null and image != ''">#{image},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLongyunArticle" parameterType="LongyunArticle">
+        update longyun_article
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="articleType != null">article_type = #{articleType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="image != null and image != ''">image = #{image},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where article_id = #{articleId}
+    </update>
+
+    <delete id="deleteLongyunArticleByArticleId" parameterType="Long">
+        delete from longyun_article where article_id = #{articleId}
+    </delete>
+
+    <delete id="deleteLongyunArticleByArticleIds" parameterType="String">
+        delete from longyun_article where article_id in 
+        <foreach item="articleId" collection="array" open="(" separator="," close=")">
+            #{articleId}
+        </foreach>
+    </delete>
+</mapper>
