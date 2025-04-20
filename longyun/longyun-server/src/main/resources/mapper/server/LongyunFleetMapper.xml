@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.nekox41.server.mapper.LongyunFleetMapper">
+    
+    <resultMap type="LongyunFleet" id="LongyunFleetResult">
+        <result property="id"    column="id"    />
+        <result property="fleetName"    column="fleet_name"    />
+        <result property="images"    column="images"    />
+        <result property="contact"    column="contact"    />
+        <result property="description"    column="description"    />
+    </resultMap>
+
+    <sql id="selectLongyunFleetVo">
+        select id, fleet_name, images, contact, description from longyun_fleet
+    </sql>
+
+    <select id="selectLongyunFleetList" parameterType="LongyunFleet" resultMap="LongyunFleetResult">
+        <include refid="selectLongyunFleetVo"/>
+        <where>  
+            <if test="fleetName != null  and fleetName != ''"> and fleet_name like concat('%', #{fleetName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectLongyunFleetById" parameterType="Long" resultMap="LongyunFleetResult">
+        <include refid="selectLongyunFleetVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLongyunFleet" parameterType="LongyunFleet" useGeneratedKeys="true" keyProperty="id">
+        insert into longyun_fleet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fleetName != null and fleetName != ''">fleet_name,</if>
+            <if test="images != null">images,</if>
+            <if test="contact != null and contact != ''">contact,</if>
+            <if test="description != null and description != ''">description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fleetName != null and fleetName != ''">#{fleetName},</if>
+            <if test="images != null">#{images},</if>
+            <if test="contact != null and contact != ''">#{contact},</if>
+            <if test="description != null and description != ''">#{description},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLongyunFleet" parameterType="LongyunFleet">
+        update longyun_fleet
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fleetName != null and fleetName != ''">fleet_name = #{fleetName},</if>
+            <if test="images != null">images = #{images},</if>
+            <if test="contact != null and contact != ''">contact = #{contact},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLongyunFleetById" parameterType="Long">
+        delete from longyun_fleet where id = #{id}
+    </delete>
+
+    <delete id="deleteLongyunFleetByIds" parameterType="String">
+        delete from longyun_fleet where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

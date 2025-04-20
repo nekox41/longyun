@@ -2,6 +2,8 @@ package com.github.nekox41.server.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.github.nekox41.common.annotation.Anonymous;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +39,7 @@ public class LongyunArticleController extends BaseController
     /**
      * 查询文章管理列表
      */
-    @PreAuthorize("@ss.hasPermi('server:article:list')")
+    @Anonymous
     @GetMapping("/list")
     public TableDataInfo list(LongyunArticle longyunArticle)
     {
